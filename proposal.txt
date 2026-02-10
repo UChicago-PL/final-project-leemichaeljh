@@ -1,0 +1,38 @@
+Project proposal
+My plan for the final project is to build a music composition system in Haskell.
+The project will model musical elements like pitches, durations, and even 
+harmonic progressions as algebraic data types. The project will then export the 
+final result to a playable format (MIDI) so that we can listen to the piece.
+
+Easy
+I hope to define the basic Music data type, and use a library like HCodecs or 
+Euterpea to convert the Music data into a standard MIDI file.
+- https://hackage.haskell.org/package/HCodecs
+- https://www.euterpea.com/
+
+A sample data type would look something like
+data Duration = Whole | Half | Quarter | Eighth | Sixteenth
+data Pitch = C | Cs | D | Ds | E | F | Fs | G | Gs | A | As | backwards
+type Octave = Int
+
+data Event = Note Pitch Octave Duration
+            | Rest Duration
+type Melody = [Event]
+
+I then hope to create some combinators like transpose to shift a melody by a  given interval
+or retrograde to play a melody backwards.
+
+Medium
+Once I can play music using the project, I would like to play multiple melodies 
+at once to create vertical layering. I also hope to add generators for chord 
+progressions and accompaniment patterns like arpeggios, broken chords, or alberti bass.
+It would also be useful to have a generator for an infinite bass line.
+
+Challenge
+If time permits, I hope to implement a Markov model with a database of well-known
+melodies. This model will hopefully extend shorter musical motifs into longer 
+coherent phrases, using the State monad ike in Chapter 15.
+
+Sources for inspiration
+https://medium.com/@7er/haskell-music-programming-and-euterpea-9f7346235acd
+https://www.cs.yale.edu/homes/hudak/Papers/HSoM.pdf
