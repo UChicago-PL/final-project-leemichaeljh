@@ -16,7 +16,7 @@ Euterpea to convert the Music data into a standard MIDI file.
 
 A sample data type to encode various musical elements would look something like
 data Duration = Whole | Half | Quarter | Eighth | Sixteenth
-data Pitch = C | Cs | D | Ds | E | F | Fs | G | Gs | A | As | backwards
+data Pitch = C | Cs | D | Ds | E | F | Fs | G | Gs | A | As | B
 type Octave = Int
 
 data Event = Note Pitch Octave Duration
