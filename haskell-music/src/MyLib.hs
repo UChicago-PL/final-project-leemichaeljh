@@ -1,8 +1,6 @@
-module MyLib (someFunc) where
-import GHC.Exts.Heap (ClosureType(WHITEHOLE))
+module MyLib where
+import Codec.Midi
 
-someFunc :: IO ()
-someFunc = putStrLn "someFunc"
 
 infixr 5:+:,:=:
 
@@ -14,8 +12,20 @@ type Duration = Rational
 
 data Primitive a = Note Duration a
             | Rest Duration
+  deriving (Eq, Show)
 
 data Music a =
   Prim (Primitive a)
   | Music a :+: Music a
   | Music a :=: Music a
+  deriving (Eq, Show)
+
+testMusic :: Music Pitch -- first two measures of twinkle twinkle
+testMusic = Prim (Note (1/4) (C, 4)) 
+            :+: Prim (Note (1/4) (C,4)) 
+            :+: Prim (Note (1/4) (G,4)) 
+            :+: Prim (Note (1/4) (G,4)) 
+            :+: Prim (Note (1/4) (A,4)) 
+            :+: Prim (Note (1/4) (A,4)) 
+            :+: Prim (Note (1/2) (G,4)) 
+
