@@ -21,11 +21,20 @@ data Primitive a = Note Duration a
             | Rest Duration
   deriving (Eq, Show)
 
+a440 :: Pitch
+a440 = (A, 4)
+
 data Music a =
   Prim (Primitive a)
   | Music a :+: Music a
   | Music a :=: Music a
   deriving (Eq, Show)
+
+qn :: Duration 
+qn = 1/4
+
+a440m :: Music Pitch
+a440m = Prim (Note qn a440)
 
 testMusic :: Music Pitch -- first two measures of twinkle twinkle
 testMusic = Prim (Note (1/4) (C, 4)) 
@@ -47,12 +56,16 @@ pcToInt pc = case pc of
   Adf -> 7; Af -> 8; A -> 9; As -> 10; Ads -> 11;
   Bdf -> 9; Bf -> 10; B -> 11; Bs -> 12; Bds -> 13
 
-{--
-pitch 
---}
+pitch :: AbsPitch -> Pitch
+pitch ap =
+  let (oct, n) = divMod ap 12
+  in ([C, Cs, D, Ds, E, F, Fs, G, Gs, A, As, B] !!n, oct)
 
 absPitch :: Pitch -> AbsPitch
 absPitch (pc, oct) = 12 * oct + pcToInt pc
+
+trans :: Int -> Pitch -> Pitch
+trans i p = pitch (absPitch p + i)
 
 note :: Duration -> a -> Music a
 note d p = Prim (Note d p)
@@ -71,3 +84,7 @@ transposeM  = mapPrim . transposeP
 
 musicToMidi :: Music Pitch -> Midi
 musicToMidi = undefined
+
+wholeToneScale :: Pitch -> [Music Pitch]
+wholeToneScale p = let f ap = note qn (pitch (absPitch p + ap))
+                    in map f [0,2,4,6,8]
